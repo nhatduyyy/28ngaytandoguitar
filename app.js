@@ -225,7 +225,6 @@
       : state.admin
         ? "Bạn có quyền quản trị: thêm, sửa, xóa video và đánh dấu trạng thái quay."
         : state.reviewer
-          ? "Tài khoản sếp: tích vào ô để đánh dấu Đã quay, bỏ tích để chuyển về Chưa quay. Thay đổi sẽ tự đồng bộ cho mọi người."
           : "Sếp đăng nhập tài khoản được cấp quyền để tích Đã quay / Chưa quay. Người xem khác vẫn thấy trạng thái nhưng không thể chỉnh sửa.";
     render();
   }
