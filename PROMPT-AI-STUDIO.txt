@@ -1,0 +1,19 @@
+Hãy giúp tôi tiếp tục phát triển dự án website "28 Ngày Tán Đổ Guitar" dựa trên các file tôi tải lên (index.html, styles.css, app.js, config.js, database.sql và thư mục assets/).
+
+MỤC TIÊU:
+- Website dành cho quản lý video cộng đồng 28 Ngày Tán Đổ Guitar.
+- Banner giữ ảnh assets/banner-28-ngay-guitar.webp mà tôi gửi.
+- Bảng nội dung luôn có 4 cột chính: STT, TÊN NỘI DUNG, LINK VIDEO, TRẠNG THÁI QUAY (tích Đã quay / bỏ tích Chưa quay).
+- Người quản trị đăng nhập mới được thêm/sửa/xóa/đổi thứ tự nội dung.
+- Sếp và người xem có thể truy cập link để xem, tìm kiếm và xem video mà không cần đăng nhập.
+- Để đánh dấu Đã quay / Chưa quay, sếp đăng nhập bằng tài khoản reviewer được cấp trong public.video_reviewers; reviewer chỉ được cập nhật is_filmed bằng RPC set_video_filming_status, KHÔNG có quyền sửa/xóa link hay nội dung.
+- Trạng thái có bộ lọc Đã quay / Chưa quay, số đếm tiến độ, và đồng bộ đa thiết bị qua Supabase.
+- Mỗi thay đổi do admin thực hiện phải được lưu vào Supabase và hiện trên thiết bị người xem qua realtime hoặc tự tải lại; KHÔNG dùng localStorage làm kho dữ liệu chính khi đã có Supabase.
+- Thiết kế tối giản, hiện đại, màu vàng kem + đỏ cam phù hợp banner, đẹp trên máy tính và điện thoại.
+- Tối ưu tốc độ tải trang, khả năng sử dụng và bảo mật (chống XSS, chỉ URL http/https, giữ phân quyền RLS).
+
+RÀNG BUỘC KỸ THUẬT:
+- Dự án hiện là HTML + CSS + JavaScript thuần, chạy được trên GitHub Pages.
+- Không để lộ service_role/secret key. Chỉ dùng publishable/anon key ở config.js.
+- Không xóa hoặc làm hỏng cấu trúc dữ liệu public.video_items / public.video_admins / public.video_reviewers và function public.set_video_filming_status.
+- Khi sửa code, trả về các file đầy đủ tương thích GitHub Pages, không yêu cầu server Node.js.
