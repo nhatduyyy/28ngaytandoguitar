@@ -2,138 +2,106 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#fff9ee" />
-  <meta name="description" content="Thư viện video và nội dung cộng đồng 28 Ngày Tán Đổ Guitar." />
-  <title>Thư viện video | 28 Ngày Tán Đổ Guitar</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#f6f7fa" />
+  <meta name="description" content="Quản lý danh sách video và tiến độ sản xuất của cộng đồng 28 Ngày Tán Đổ Guitar." />
+  <title>Quản lý video | 28 Ngày Tán Đổ Guitar</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <!-- Giữ file config.js có sẵn trên GitHub: chứa Project URL và publishable key của riêng bạn. -->
   <script src="config.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
-  <div class="topline" aria-hidden="true"></div>
-  <header class="site-header">
-    <div class="container header-row">
-      <a class="brand" href="./index.html" aria-label="Về đầu trang 28 Ngày Tán Đổ Guitar">
-        <div class="brand-mark"><span>28</span><small>NGÀY</small></div>
-        <div class="brand-name"><strong>TÁN ĐỔ GUITAR</strong><span>Thư viện nội dung cộng đồng</span></div>
+<div class="app-shell">
+  <aside class="sidebar" aria-label="Điều hướng">
+    <div class="sidebar-inner">
+      <a class="brand" href="#tong-quan" aria-label="28 Ngày Tán Đổ Guitar">
+        <span class="brand-mark"><b>28</b><small>NGÀY</small></span>
+        <span class="brand-name"><strong>TÁN ĐỔ<br/>GUITAR</strong><span>Quản lý nội dung</span></span>
       </a>
-      <div class="header-actions">
-        <span class="connection-badge" id="connectionBadge"><span class="status-dot"></span><span id="connectionText">Đang kiểm tra...</span></span>
-        <button class="btn btn-secondary header-share" type="button" id="shareButton" aria-label="Sao chép liên kết website">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-          <span>Chia sẻ</span>
-        </button>
-        <button class="btn btn-outline" type="button" id="adminButton">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15v2m-6 4h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2Zm3-12V6a3 3 0 1 1 6 0v3"/></svg>
-          <span id="adminButtonText">Đăng nhập quản trị</span>
-        </button>
+      <div class="sidebar-divider"></div>
+      <div class="nav-heading">KHÔNG GIAN LÀM VIỆC</div>
+      <nav class="side-nav">
+        <a class="nav-link" href="#tong-quan"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/></svg> Tổng quan</a>
+        <a class="nav-link is-active" href="#thu-vien"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3z"/></svg> Danh sách video</a>
+      </nav>
+      <div class="sidebar-card">
+        <div class="sidebar-card-label">CỘNG ĐỒNG</div>
+        <img src="banner-28-ngay-guitar.webp" alt="Banner cộng đồng 28 Ngày Tán Đổ Guitar" loading="lazy" />
+        <strong>28 Ngày Tán Đổ Guitar</strong>
+        <span>Lưu trữ và theo dõi tiến độ video.</span>
       </div>
+      <div class="side-bottom">© <span id="currentYear"></span> · Guitar Workspace</div>
     </div>
-  </header>
+  </aside>
 
-  <main class="container main-content">
-    <section class="hero" aria-label="Ảnh bìa của cộng đồng 28 Ngày Tán Đổ Guitar">
-      <img src="banner-28-ngay-guitar.webp" alt="Banner Khóa học 10 ngày đệm hát cơ bản của cộng đồng 28 Ngày Tán Đổ Guitar" fetchpriority="high" />
-    </section>
-
-    <section class="intro-section">
-      <div class="intro-copy">
-        <div class="eyebrow"><span class="eyebrow-line"></span> GÓC LƯU TRỮ NỘI DUNG</div>
-        <h1>Kho video <span>28 Ngày</span><br class="desktop-break" /> Tán Đổ Guitar<span class="heading-dot">.</span></h1>
-        <p>Tất cả video và tài liệu được sắp xếp gọn gàng tại một nơi, giúp mọi người dễ dàng theo dõi và tìm lại nội dung cần xem.</p>
-      </div>
-      <div class="stats-grid">
-        <div class="stat-card"><div class="stat-symbol">♫</div><div class="stat-number" id="totalCount">0</div><div class="stat-label">Tổng nội dung</div></div>
-        <div class="stat-card"><div class="stat-symbol play-symbol">▶</div><div class="stat-number" id="videoCount">0</div><div class="stat-label">Video có liên kết</div></div>
-        <div class="stat-card"><div class="stat-symbol filmed-symbol">✓</div><div class="stat-number" id="filmedCount">0</div><div class="stat-label">Nội dung đã quay</div></div>
-      </div>
-    </section>
-
-    <div class="demo-alert" id="demoAlert" role="status" hidden>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 7v5m0 4h.01"/></svg>
-      <div><strong>Chế độ xem thử trên máy này.</strong> Những nội dung bạn thêm hiện chỉ được lưu trong trình duyệt. Để sếp thấy nội dung trên mọi thiết bị, hãy kết nối Supabase theo file <strong>HUONG-DAN.md</strong>.</div>
-    </div>
-    <div class="error-alert" id="errorAlert" role="alert" hidden></div>
-
-    <section class="library" id="thu-vien">
-      <div class="section-heading">
-        <div><div class="overline">DANH SÁCH VIDEO</div><h2>Thư viện nội dung</h2><p>Quản lý và theo dõi mọi video thuộc cộng đồng.</p></div>
-        <button id="addButton" type="button" class="btn btn-primary" hidden>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-          Thêm nội dung
-        </button>
-      </div>
-
-      <div class="library-panel">
-        <div class="toolbar">
-          <div class="search-field">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
-            <input id="searchInput" type="search" placeholder="Tìm kiếm tên video, đường dẫn..." autocomplete="off" aria-label="Tìm kiếm nội dung" />
-            <kbd>⌕</kbd>
-          </div>
-          <div class="filter-tabs" role="group" aria-label="Lọc nội dung">
-            <button type="button" class="filter-tab is-active" data-filter="all" aria-pressed="true">Tất cả <span id="filterAllCount">0</span></button>
-            <button type="button" class="filter-tab" data-filter="linked" aria-pressed="false">Có video</button>
-            <button type="button" class="filter-tab" data-filter="unlinked" aria-pressed="false">Chưa có link</button>
-            <button type="button" class="filter-tab" data-filter="filmed" aria-pressed="false">Đã quay</button>
-            <button type="button" class="filter-tab" data-filter="unfilmed" aria-pressed="false">Chưa quay</button>
-          </div>
+  <div class="workspace">
+    <header class="site-header">
+      <div class="header-row">
+        <div class="breadcrumb"><span class="breadcrumb-icon">⌘</span><span>Không gian làm việc</span><span class="crumb-separator">/</span><strong>Video</strong></div>
+        <div class="header-actions">
+          <span class="connection-badge" id="connectionBadge"><span class="status-dot"></span><span id="connectionText">Đang kết nối...</span></span>
+          <button class="btn btn-secondary" type="button" id="shareButton" aria-label="Sao chép đường dẫn website"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span>Chia sẻ</span></button>
+          <button class="btn btn-outline" type="button" id="adminButton"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 17v3m-6-3v3M7 8V6a5 5 0 0 1 10 0v2M5 9h14v10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V9Z"/></svg><span id="adminButtonText">Đăng nhập</span></button>
         </div>
-        <div class="role-hint" id="roleHint">Để đánh dấu đã quay/chưa quay, sếp đăng nhập bằng tài khoản được cấp quyền. Người xem khác vẫn xem được trạng thái.</div>
-        <div class="table-scroll">
-          <table class="content-table" aria-label="Danh sách video cộng đồng">
-            <thead><tr><th class="col-index" scope="col">STT</th><th scope="col">TÊN NỘI DUNG</th><th scope="col">LINK VIDEO</th><th class="col-filmed" scope="col">TRẠNG THÁI QUAY</th><th class="col-manage" id="manageHeader" scope="col" hidden>QUẢN LÝ</th></tr></thead>
-            <tbody id="videoTableBody"></tbody>
-          </table>
-          <div class="empty-state" id="emptyState" hidden>
-            <div class="empty-art" aria-hidden="true"><span>♫</span></div>
-            <h3 id="emptyTitle">Chưa có nội dung nào</h3>
-            <p id="emptyDescription">Danh sách sẽ xuất hiện ở đây khi bạn thêm nội dung đầu tiên.</p>
-            <button type="button" class="btn btn-primary" id="emptyAddButton" hidden>+ Thêm nội dung đầu tiên</button>
-          </div>
-        </div>
-        <div class="table-footer"><span id="tableSummary">Hiển thị 0 nội dung</span><span class="update-hint"><span class="pulse-dot"></span><span id="updateHint">Tự động cập nhật khi có thay đổi</span></span></div>
       </div>
-    </section>
-    <footer class="footer"><span><strong>28 NGÀY TÁN ĐỔ GUITAR</strong> · Kết nối đam mê, lan tỏa âm nhạc</span><span>© <span id="currentYear"></span> · Thư viện video cộng đồng</span></footer>
-  </main>
+    </header>
+    <main class="main-content" id="tong-quan">
+      <section class="page-intro">
+        <div><div class="page-kicker"><span class="kicker-spark"></span> QUẢN LÝ SẢN XUẤT NỘI DUNG</div>
+          <h1>Thư viện <span>video</span></h1>
+          <p>28 Ngày Tán Đổ Guitar <span class="intro-divider">•</span> Theo dõi nội dung và tiến độ quay</p>
+        </div>
+        <div class="intro-graphic" aria-hidden="true"><svg viewBox="0 0 120 90"><circle cx="60" cy="45" r="33"/><circle cx="60" cy="45" r="21"/><path d="M55 33v24l19-12Z"/></svg></div>
+      </section>
 
-  <dialog id="editDialog" class="app-dialog" aria-labelledby="editTitle">
-    <form id="editForm" class="dialog-form">
-      <div class="dialog-header"><div><div class="overline">QUẢN TRỊ NỘI DUNG</div><h2 id="editTitle">Thêm nội dung mới</h2></div><button type="button" class="icon-button dialog-close" data-close="editDialog" aria-label="Đóng">×</button></div>
-      <div class="form-field"><label for="contentTitle">Tên nội dung <span class="required">*</span></label><input id="contentTitle" maxlength="200" type="text" placeholder="Ví dụ: Hướng dẫn chuyển hợp âm cơ bản" required /><small>Nhập tên rõ ràng để mọi người dễ dàng tìm kiếm.</small></div>
-      <div class="form-field"><label for="contentUrl">Link video</label><input id="contentUrl" type="url" placeholder="https://www.youtube.com/watch?v=..." /><small>Hỗ trợ liên kết YouTube, Facebook, TikTok, Google Drive, v.v. Có thể bổ sung sau.</small></div>
-      <div class="dialog-actions"><button type="button" class="btn btn-secondary" data-close="editDialog">Hủy</button><button type="submit" class="btn btn-primary" id="saveButton">Lưu nội dung</button></div>
-    </form>
-  </dialog>
+      <section class="stats-grid" aria-label="Thống kê nội dung">
+        <article class="stat-card"><div class="stat-top"><span>Tổng nội dung</span><span class="stat-icon neutral"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM8 9h8M8 13h8M8 17h5"/></svg></span></div><div class="stat-number" id="totalCount">0</div><div class="stat-caption">Nội dung trong thư viện</div></article>
+        <article class="stat-card"><div class="stat-top"><span>Đã quay</span><span class="stat-icon green"><svg viewBox="0 0 24 24"><path d="M4 12.5 10 18l10-12"/></svg></span></div><div class="stat-number" id="filmedCount">0</div><div class="stat-caption">Hoàn thành sản xuất</div></article>
+        <article class="stat-card"><div class="stat-top"><span>Chưa quay</span><span class="stat-icon amber"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span></div><div class="stat-number" id="unfilmedCount">0</div><div class="stat-caption">Đang chờ thực hiện</div></article>
+        <article class="stat-card"><div class="stat-top"><span>Đã có link</span><span class="stat-icon rose"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span></div><div class="stat-number" id="videoCount">0</div><div class="stat-caption">Video đã gắn liên kết</div></article>
+      </section>
 
-  <dialog id="loginDialog" class="app-dialog small-dialog" aria-labelledby="loginTitle">
-    <form id="loginForm" class="dialog-form">
-      <div class="dialog-header"><div><div class="overline">QUẢN TRỊ / DUYỆT TIẾN ĐỘ</div><h2 id="loginTitle">Đăng nhập</h2></div><button type="button" class="icon-button dialog-close" data-close="loginDialog" aria-label="Đóng">×</button></div>
-      <p class="form-intro">Người xem không cần đăng nhập. Quản trị viên có thể quản lý nội dung; tài khoản sếp chỉ được tích Đã quay / Chưa quay, không thể sửa hoặc xóa video.</p>
-      <div class="form-field"><label for="loginEmail">Email được cấp quyền</label><input id="loginEmail" type="email" placeholder="email@example.com" autocomplete="username" required /></div>
-      <div class="form-field"><label for="loginPassword">Mật khẩu</label><input id="loginPassword" type="password" placeholder="Nhập mật khẩu" autocomplete="current-password" required /></div>
-      <p id="loginError" class="form-error" hidden></p>
-      <div class="dialog-actions"><button type="button" class="btn btn-secondary" data-close="loginDialog">Hủy</button><button type="submit" class="btn btn-primary" id="loginSubmit">Đăng nhập</button></div>
-    </form>
-  </dialog>
+      <div class="demo-alert" id="demoAlert" role="status" hidden><strong>Bản xem thử.</strong> Nội dung chỉ lưu trên thiết bị này.</div>
+      <div class="error-alert" id="errorAlert" role="alert" hidden></div>
 
-  <dialog id="playerDialog" class="app-dialog player-dialog" aria-labelledby="playerTitle">
-    <div class="dialog-form">
-      <div class="dialog-header"><div><div class="overline">XEM NỘI DUNG</div><h2 id="playerTitle">Video</h2></div><button type="button" class="icon-button dialog-close" data-close="playerDialog" aria-label="Đóng">×</button></div>
-      <div id="playerContainer"></div>
-      <div class="dialog-actions"><button type="button" class="btn btn-secondary" data-close="playerDialog">Đóng</button><a href="#" id="playerExternal" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Mở video gốc ↗</a></div>
-    </div>
-  </dialog>
-  <dialog id="confirmDialog" class="app-dialog small-dialog" aria-labelledby="confirmTitle">
-    <div class="dialog-form"><div class="dialog-header"><div><div class="overline">XÁC NHẬN</div><h2 id="confirmTitle">Xóa nội dung?</h2></div><button class="icon-button dialog-close" type="button" data-close="confirmDialog" aria-label="Đóng">×</button></div><p class="form-intro" id="confirmMessage">Nội dung này sẽ bị xóa khỏi thư viện.</p><div class="dialog-actions"><button type="button" class="btn btn-secondary" data-close="confirmDialog">Hủy</button><button type="button" class="btn btn-danger" id="confirmDeleteButton">Xóa nội dung</button></div></div>
-  </dialog>
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      <section class="library" id="thu-vien">
+        <div class="section-heading">
+          <div><div class="section-kicker">THƯ VIỆN</div><h2>Danh sách video</h2></div>
+          <button id="addButton" type="button" class="btn btn-primary" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Thêm nội dung</button>
+        </div>
+        <div class="library-panel">
+          <div class="toolbar">
+            <div class="search-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="searchInput" type="search" placeholder="Tìm tên nội dung hoặc link video..." autocomplete="off" aria-label="Tìm kiếm nội dung"/></div>
+            <div class="filter-tabs" role="group" aria-label="Lọc nội dung">
+              <button type="button" class="filter-tab is-active" data-filter="all" aria-pressed="true">Tất cả <span id="filterAllCount">0</span></button>
+              <button type="button" class="filter-tab" data-filter="unfilmed" aria-pressed="false">Chưa quay</button>
+              <button type="button" class="filter-tab" data-filter="filmed" aria-pressed="false">Đã quay</button>
+              <button type="button" class="filter-tab" data-filter="linked" aria-pressed="false">Có link</button>
+              <button type="button" class="filter-tab" data-filter="unlinked" aria-pressed="false">Thiếu link</button>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="content-table" aria-label="Danh sách video"><thead><tr><th class="col-index" scope="col">STT</th><th scope="col">NỘI DUNG VIDEO</th><th scope="col">LINK VIDEO</th><th class="col-filmed" scope="col">TIẾN ĐỘ QUAY</th><th class="col-manage" id="manageHeader" scope="col" hidden>THAO TÁC</th></tr></thead><tbody id="videoTableBody"></tbody></table>
+            <div class="empty-state" id="emptyState" hidden><div class="empty-art" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="m10 9 5 3-5 3z"/></svg></div><h3 id="emptyTitle">Chưa có nội dung nào</h3><p id="emptyDescription">Thêm nội dung đầu tiên để bắt đầu quản lý video.</p><button type="button" class="btn btn-primary" id="emptyAddButton" hidden>+ Thêm nội dung</button></div>
+          </div>
+          <div class="table-footer"><span id="tableSummary">Hiển thị 0 nội dung</span><span class="update-hint"><span class="pulse-dot"></span><span id="updateHint">Đồng bộ tự động</span></span></div>
+        </div>
+      </section>
+      <footer class="footer"><span>28 NGÀY TÁN ĐỔ GUITAR</span><span>Video Workspace</span></footer>
+    </main>
+  </div>
+</div>
+
+<dialog id="editDialog" class="app-dialog" aria-labelledby="editTitle"><form id="editForm" class="dialog-form"><div class="dialog-header"><div><div class="dialog-eyebrow">NỘI DUNG</div><h2 id="editTitle">Thêm nội dung mới</h2></div><button type="button" class="icon-button" data-close="editDialog" aria-label="Đóng">×</button></div><div class="form-field"><label for="contentTitle">Tên nội dung <span class="required">*</span></label><input id="contentTitle" maxlength="200" type="text" placeholder="Nhập tên video..." required /></div><div class="form-field"><label for="contentUrl">Link video</label><input id="contentUrl" type="url" placeholder="https://..." /></div><div class="dialog-actions"><button type="button" class="btn btn-secondary" data-close="editDialog">Hủy</button><button type="submit" class="btn btn-primary" id="saveButton">Lưu nội dung</button></div></form></dialog>
+<dialog id="loginDialog" class="app-dialog small-dialog" aria-labelledby="loginTitle"><form id="loginForm" class="dialog-form"><div class="dialog-header"><div><div class="dialog-eyebrow">TÀI KHOẢN</div><h2 id="loginTitle">Đăng nhập</h2></div><button type="button" class="icon-button" data-close="loginDialog" aria-label="Đóng">×</button></div><div class="form-field"><label for="loginEmail">Email</label><input id="loginEmail" type="email" placeholder="name@example.com" autocomplete="username" required /></div><div class="form-field"><label for="loginPassword">Mật khẩu</label><input id="loginPassword" type="password" placeholder="Nhập mật khẩu" autocomplete="current-password" required /></div><p id="loginError" class="form-error" hidden></p><div class="dialog-actions"><button type="button" class="btn btn-secondary" data-close="loginDialog">Hủy</button><button type="submit" class="btn btn-primary" id="loginSubmit">Đăng nhập</button></div></form></dialog>
+<dialog id="playerDialog" class="app-dialog player-dialog" aria-labelledby="playerTitle"><div class="dialog-form"><div class="dialog-header"><div><div class="dialog-eyebrow">XEM VIDEO</div><h2 id="playerTitle">Video</h2></div><button type="button" class="icon-button" data-close="playerDialog" aria-label="Đóng">×</button></div><div id="playerContainer"></div><div class="dialog-actions"><button type="button" class="btn btn-secondary" data-close="playerDialog">Đóng</button><a href="#" id="playerExternal" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Mở video gốc ↗</a></div></div></dialog>
+<dialog id="confirmDialog" class="app-dialog small-dialog" aria-labelledby="confirmTitle"><div class="dialog-form"><div class="dialog-header"><div><div class="dialog-eyebrow">XÁC NHẬN</div><h2 id="confirmTitle">Xóa nội dung?</h2></div><button class="icon-button" type="button" data-close="confirmDialog" aria-label="Đóng">×</button></div><p class="form-intro" id="confirmMessage">Nội dung này sẽ bị xóa khỏi thư viện.</p><div class="dialog-actions"><button type="button" class="btn btn-secondary" data-close="confirmDialog">Hủy</button><button type="button" class="btn btn-danger" id="confirmDeleteButton">Xóa nội dung</button></div></div></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>

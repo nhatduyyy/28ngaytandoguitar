@@ -110,6 +110,7 @@
     el("totalCount").textContent = count.toLocaleString("vi-VN");
     el("videoCount").textContent = linked.toLocaleString("vi-VN");
     el("filmedCount").textContent = state.entries.filter(item => !!item.is_filmed).length.toLocaleString("vi-VN");
+    el("unfilmedCount").textContent = state.entries.filter(item => !item.is_filmed).length.toLocaleString("vi-VN");
     el("filterAllCount").textContent = String(count);
 
     const tbody = el("videoTableBody");
@@ -150,7 +151,7 @@
         link.href = item.url;
         link.target = "_blank";
         link.rel = "noopener noreferrer";
-        link.textContent = item.url.replace(/^https?:\/\//i, "");
+        link.textContent = getHostname(item.url);
         link.title = item.url;
         group.append(play, link);
         tdUrl.append(group);
@@ -206,26 +207,20 @@
     el("emptyState").hidden = !isEmpty;
     if (isEmpty) {
       const hasAny = count !== 0;
-      el("emptyTitle").textContent = hasAny ? "Không tìm thấy nội dung phù hợp" : "Thư viện đang chờ video đầu tiên";
+      el("emptyTitle").textContent = hasAny ? "Không tìm thấy nội dung phù hợp" : "Chưa có nội dung nào";
       el("emptyDescription").textContent = hasAny
         ? "Bạn hãy thử từ khóa khác hoặc chọn lại bộ lọc."
-        : "Bắt đầu thêm tên bài học và đường dẫn video để xây dựng thư viện cho cộng đồng.";
+        : "Thêm nội dung đầu tiên để bắt đầu quản lý video.";
       el("emptyAddButton").hidden = !state.admin || hasAny;
     }
     el("tableSummary").textContent = `Hiển thị ${rows.length} / ${count} nội dung`;
   }
 
   function updateAdminUI() {
-    const label = state.admin ? "Thoát quản trị" : state.reviewer ? "Thoát tài khoản sếp" : state.mode === "demo" ? "Chỉnh sửa bản thử" : "Đăng nhập";
+    const label = state.admin || state.reviewer ? "Đăng xuất" : state.mode === "demo" ? "Dùng thử quản trị" : "Đăng nhập";
     el("adminButtonText").textContent = label;
     el("addButton").hidden = !state.admin;
     el("manageHeader").hidden = !state.admin;
-    el("roleHint").textContent = state.mode === "demo"
-      ? "Bản xem thử: bạn có thể tích Đã quay / Chưa quay; dữ liệu chỉ được lưu trên trình duyệt này."
-      : state.admin
-        ? "Bạn có quyền quản trị: thêm, sửa, xóa video và đánh dấu trạng thái quay."
-        : state.reviewer
-          : "Sếp đăng nhập tài khoản được cấp quyền để tích Đã quay / Chưa quay. Người xem khác vẫn thấy trạng thái nhưng không thể chỉnh sửa.";
     render();
   }
 
@@ -322,7 +317,7 @@
       state.mode = "demo";
       state.entries = storageGet();
       el("demoAlert").hidden = false;
-      el("updateHint").textContent = "Lưu tại trình duyệt này · Chưa đồng bộ";
+      el("updateHint").textContent = "Chỉ lưu trên thiết bị này";
       setBadge("demo", "Bản xem thử");
       updateAdminUI();
       return;
@@ -339,7 +334,7 @@
       state.client = window.supabase.createClient(url, key, {
         auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false }
       });
-      el("updateHint").textContent = "Đồng bộ trực tiếp · Tự kiểm tra mỗi 20 giây";
+      el("updateHint").textContent = "Đồng bộ tự động";
       await loadEntries();
       const { data: { session }, error } = await state.client.auth.getSession();
       if (!error && session?.user?.email) {
