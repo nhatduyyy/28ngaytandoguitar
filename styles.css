@@ -47,3 +47,46 @@
   .content-table .link-stack{min-width:0;max-width:100%;flex-wrap:wrap}
   .content-table .video-url{max-width:100%}
 }
+
+/* Phóng to logo và tên cộng đồng trên header */
+.site-header .brand {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex: 1;
+    min-width: 0;
+}
+
+.site-header .brand-mark {
+    width: 85px;
+    height: 85px;
+    flex-shrink: 0;
+}
+
+.site-header .brand-name {
+    font-size: clamp(26px, 2.6vw, 44px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -1px;
+}
+
+.site-header .brand-subtitle {
+    font-size: 17px;
+    margin-top: 6px;
+}
+
+/* Giữ giao diện gọn trên điện thoại */
+@media (max-width: 768px) {
+    .site-header .brand-mark {
+        width: 52px;
+        height: 52px;
+    }
+
+    .site-header .brand-name {
+        font-size: 20px;
+    }
+
+    .site-header .brand-subtitle {
+        font-size: 12px;
+    }
+}
